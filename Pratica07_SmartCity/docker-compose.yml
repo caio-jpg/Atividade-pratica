@@ -1,0 +1,58 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: smart_city_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: geo_analytics
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smart_city_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: smart_city_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB_NAME=geo_analytics
+      - SQLITE_DB_PATH=/app/data/smart_city.db
+      - RESTAURANTES_JSON=/app/data/restaurantes.json
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - smart_city_network
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: smart_city_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    networks:
+      - smart_city_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  smart_city_network:
+    driver: bridge

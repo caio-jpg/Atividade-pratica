@@ -1,0 +1,53 @@
+# ==========================================================
+# Credenciais / variáveis de ambiente
+# (o .env.example de cada pasta É versionado; o .env não)
+# ==========================================================
+.env
+.env.*
+!.env.example
+
+# ==========================================================
+# Python
+# ==========================================================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+
+# ==========================================================
+# Bancos e dados gerados em execução
+# ==========================================================
+*.db
+*.sqlite
+*.sqlite3
+backup.sql
+*.log
+
+# Ex03: CSV baixado do dados.gov.br e GeoJSON exportado
+Ex03_GeoJSON_UBS/dados/
+
+# Prática 07: SQLite criado pelo backend (restaurantes.json continua versionado)
+Pratica07_SmartCity/data/*
+!Pratica07_SmartCity/data/restaurantes.json
+
+# MongoDB local (caso rode mongod apontando para a pasta do projeto)
+mongo-data/
+data/db/
+
+# ==========================================================
+# Streamlit / IDEs / sistema operacional
+# ==========================================================
+.streamlit/secrets.toml
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*

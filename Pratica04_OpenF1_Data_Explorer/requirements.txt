@@ -1,0 +1,5 @@
+streamlit>=1.50
+pymongo>=4.6
+python-dotenv
+pandas
+plotly
